@@ -1,7 +1,5 @@
 # Project-Mirai
 
-Here’s your **hackathon-ready proposal** for **Mirai** — designed so you can pitch it to your teammates and even reuse parts for your PPT.
-
 ---
 
 ## **Project Proposal — Mirai**
