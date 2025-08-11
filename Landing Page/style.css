@@ -1,15 +1,25 @@
-body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+html, body {
+    height: 100%;
+    width: 100%;
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body {
     background: rgb(22, 22, 22);
 }
 
 .container {
-    width: 500px;
-    height: 500px;
+    width: 90vw;
+    max-width: 500px;
+    height: 90vw;
+    max-height: 500px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,6 +32,11 @@ button {
     border: none;
     background: transparent;
     display: flex;
+    transition: transform 0.3s cubic-bezier(0.77,0,0.175,1);
+}
+
+button:hover {
+    transform: scale(1.13);
 }
 
 button img {
@@ -47,9 +62,11 @@ button img {
 
 .pillar-animation {
   position: fixed;
-  top: 0; left: 0;
-  width: 100vw; height: 100vh;
-  z-index: 1;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
   pointer-events: none;
   display: flex;
 }
@@ -57,9 +74,8 @@ button img {
 .pillar {
   flex: 1;
   height: 100vh;
-  transition: transform 1.6s cubic-bezier(0.77,0,0.175,1);
+  transition: transform 1.6s cubic-bezier(0.77,0,0.175,1), opacity 0.7s;
   will-change: transform;
-  transform: translateY(0);
   opacity: 0;
 }
 .pillar-1 {
@@ -75,6 +91,35 @@ button img {
     background: #6E6E6E;
 }
 
+/* Initial state: pillars are off-screen */
+.pillar-1,
+.pillar-3 {
+  transform: translateY(-100vh); /* Start above */
+}
+.pillar-2,
+.pillar-4 {
+  transform: translateY(100vh); /* Start below */
+}
+
+/* Animate in: pillars slide to cover screen (now scaleY for full coverage) */
+.pillar-animation.pillar-animate-in .pillar {
+  opacity: 1;
+  transform: translateY(0) scaleY(1.2); /* Slightly larger to ensure coverage */
+}
+
+/* Animate out: pillars slide away (unchanged) */
+.pillar-animation.pillar-animate .pillar-1,
+.pillar-animation.pillar-animate .pillar-3 {
+  transform: translateY(-100vh);
+}
+.pillar-animation.pillar-animate .pillar-2,
+.pillar-animation.pillar-animate .pillar-4 {
+  transform: translateY(100vh);
+}
+.pillar-animation.pillar-animate .pillar {
+  opacity: 1;
+}
+
 .pillar-animation.pillar-animate {
   z-index: 9999; 
   pointer-events: auto;
@@ -82,16 +127,6 @@ button img {
 
 .pillar-animation.pillar-animate .pillar {
   opacity: 1;
-}
-
-.pillar-animation.pillar-animate .pillar-1,
-.pillar-animation.pillar-animate .pillar-3 {
-  transform: translateY(-100vh);
-}
-
-.pillar-animation.pillar-animate .pillar-2,
-.pillar-animation.pillar-animate .pillar-4 {
-  transform: translateY(100vh);
 }
 
 .body-exit .container {
