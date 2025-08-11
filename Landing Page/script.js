@@ -1,3 +1,11 @@
 document.getElementById('navigate-btn').addEventListener('click', function() {
-    window.location.href = '../Auth Page/Auth.html';
+    this.classList.add('button-fade-out');
+    setTimeout(() => {
+        document.body.classList.add('body-exit');
+        const pillarAnim = document.getElementById('pillar-animation');
+        pillarAnim.classList.add('pillar-animate');
+        setTimeout(function() {
+            window.location.href = '../Auth Page/Auth.html';
+        }, 1600); 
+    }, 700); 
 });

@@ -15,7 +15,7 @@ body{
     justify-content: center;
     flex-direction: column;
     height: 100vh;
-    animation: fadeIn 1s ease;
+    animation: fadeIn 2s ease;
 }
 
 @keyframes fadeIn {
@@ -144,32 +144,44 @@ body{
 }
 
 .social-icons .icon {
-    border: 1.5px solid #5c6bc0;
-    background: rgb(22, 22, 22);
-    border-radius: 10%;
-    display: inline-flex;
-    justify-content: center;
+    display: flex;
     align-items: center;
-    width: 30px;
-    height: 40px;
+    justify-content: flex-start;
+    gap: 12px;
+    border: 1.5px solid #9B9A9A;
+    background: rgb(22, 22, 22);
+    border-radius: 8px;
+    display: inline-flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 285.6px;
+    height: 50px;
     cursor: pointer;
     transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
 .social-icons .icon:hover {
-    background: #5c6bc0;
-    border-color: #5c6bc0;
+    background: #9B9A9A;
+    border-color: #9B9A9A;
     transform: scale(1.15);
 }
 
 .social-icons .icon i {
-    color: #5c6bc0;
+    color: #9B9A9A;
     font-size: 1.6em;
     transition: color 0.2s;
 }
 
 .social-icons .icon:hover i {
     color: #fff;
+}
+
+.icon-text {
+    color: #fff;
+    font-size: 1em;
+    font-weight: 500;
+    margin-left: 8px;
+    letter-spacing: 0.5px;
 }
 
 .form-container form button {
@@ -188,7 +200,7 @@ body{
 }
 
 .form-container form button:hover {
-    background-color: #5c6bc0;
+    background-color: #9B9A9A;
     color: #fff;
 }
 
@@ -210,9 +222,9 @@ body{
 }
 
 .toggle{
-    background-color: #5c6bc0;
+    background-color: #9B9A9A;
     height: 100%;
-    background: linear-gradient(to right, #5c6bc0, #5c6bc0);
+    background: linear-gradient(to right, #9B9A9A, #9B9A9A);
     color: rgb(22, 22, 22);
     position: relative;
     left: -100%;
