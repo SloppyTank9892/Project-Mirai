@@ -57,11 +57,22 @@ button img {
 .pillar {
   flex: 1;
   height: 100vh;
-  background: #9B9A9A;
   transition: transform 1.6s cubic-bezier(0.77,0,0.175,1);
   will-change: transform;
   transform: translateY(0);
   opacity: 0;
+}
+.pillar-1 {
+    background: #D8D8D8;
+}
+.pillar-2 {
+    background: #B5B5B5;
+}
+.pillar-3 {
+    background: #9B9A9A;
+}
+.pillar-4 {
+    background: #6E6E6E;
 }
 
 .pillar-animation.pillar-animate {
