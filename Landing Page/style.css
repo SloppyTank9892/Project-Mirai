@@ -91,23 +91,20 @@ button img {
     background: #6E6E6E;
 }
 
-/* Initial state: pillars are off-screen */
 .pillar-1,
 .pillar-3 {
-  transform: translateY(-100vh); /* Start above */
+  transform: translateY(-100vh);
 }
 .pillar-2,
 .pillar-4 {
-  transform: translateY(100vh); /* Start below */
+  transform: translateY(100vh);
 }
 
-/* Animate in: pillars slide to cover screen (now scaleY for full coverage) */
 .pillar-animation.pillar-animate-in .pillar {
   opacity: 1;
-  transform: translateY(0) scaleY(1.2); /* Slightly larger to ensure coverage */
+  transform: translateY(0) scaleY(1.2);
 }
 
-/* Animate out: pillars slide away (unchanged) */
 .pillar-animation.pillar-animate .pillar-1,
 .pillar-animation.pillar-animate .pillar-3 {
   transform: translateY(-100vh);
