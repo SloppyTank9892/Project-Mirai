@@ -23,7 +23,7 @@ function serveFile(res, filePath, contentType) {
 const server = http.createServer((req, res) => {
   console.log(`Received request`);
   if (req.url === "/auth" && req.method === "GET") {
-    serveFile(res, path.join(__dirname, "Auth Page", "Auth.html"), "text/html");
+    serveFile(res, path.join(__dirname, "Auth Page", "auth.html"), "text/html");
   } else if (req.url === "/" && req.method === "GET") {
     serveFile(
       res,
@@ -31,10 +31,32 @@ const server = http.createServer((req, res) => {
       "text/html"
     );
   } else if (req.url.endsWith(".css")) {
-    //browser asks this we send this
-    serveFile(res, path.join(__dirname, req.url), "text/css"); //browser asks this we send this
+    serveFile(res, path.join(__dirname, req.url), "text/css");
   } else if (req.url.endsWith(".js")) {
-    serveFile(res, path.join(__dirname, req.url), "application/javascript"); //browser asks this we send this
+    serveFile(res, path.join(__dirname, req.url), "application/javascript");
+  } else if (
+    req.url.endsWith(".png") ||
+    req.url.endsWith(".jpg") ||
+    req.url.endsWith(".jpeg") ||
+    req.url.endsWith(".gif") ||
+    req.url.endsWith(".svg") ||
+    req.url.endsWith(".ico")
+  ) {
+    // Serve image files
+    const ext = path.extname(req.url).toLowerCase();
+    const mimeTypes = {
+      ".png": "image/png",
+      ".jpg": "image/jpeg",
+      ".jpeg": "image/jpeg",
+      ".gif": "image/gif",
+      ".svg": "image/svg+xml",
+      ".ico": "image/x-icon",
+    };
+    serveFile(
+      res,
+      path.join(__dirname, req.url),
+      mimeTypes[ext] || "application/octet-stream"
+    );
   } else {
     res.writeHead(404);
     res.end("Not found");
