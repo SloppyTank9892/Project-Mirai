@@ -126,6 +126,23 @@ button img {
   opacity: 1;
 }
 
+.pillar-animation.pillar-animate-out .pillar-1,
+.pillar-animation.pillar-animate-out .pillar-3 {
+  transform: translateY(-100vh);
+  opacity: 0;
+}
+
+.pillar-animation.pillar-animate-out .pillar-2,
+.pillar-animation.pillar-animate-out .pillar-4 {
+  transform: translateY(100vh);
+  opacity: 0;
+}
+
+.pillar-animation.pillar-animate-out {
+  z-index: 9999; 
+  pointer-events: auto;
+}
+
 .body-exit .container {
   opacity: 0;
   visibility: hidden;
