@@ -74,7 +74,7 @@ button img {
 .pillar {
   flex: 1;
   height: 100vh;
-  transition: transform 1.6s cubic-bezier(0.77,0,0.175,1), opacity 0.7s;
+  transition: transform 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1.5s ease-out;
   will-change: transform;
   opacity: 0;
 }
@@ -151,6 +151,6 @@ button img {
 
 .button-fade-out {
   opacity: 0;
-  transition: opacity 0.7s;
+  transition: opacity 1.2s ease-out;
   pointer-events: none;
 }
