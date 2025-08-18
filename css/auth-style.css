@@ -23,6 +23,15 @@ body{
     to { opacity: 1; }
 }
 
+body.fade-out {
+    animation: fadeOut 1s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
 .container{
     background-color: rgb(22, 22, 22);
     border-radius: 30px;
