@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complete Your Profile - Mirai</title>
+    <link rel="stylesheet" href="../css/auth2-style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header-section">
+            <h1>Complete Your Profile</h1>
+            <p>Tell us about yourself to get started</p>
+        </div>
+        
+        <form class="auth-form" id="authForm">
+            <div class="form-group">
+                <label for="studentName">Student Name</label>
+                <input type="text" id="studentName" name="studentName" placeholder="Enter your full name" required>
+                <span class="error-message" id="nameError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="collegeName">College Name</label>
+                <input type="text" id="collegeName" name="collegeName" placeholder="Enter your college/university name" required>
+                <span class="error-message" id="collegeError"></span>
+            </div>
+            
+            <div class="form-group">
+                <label for="course">Course</label>
+                <select id="course" name="course" required>
+                    <option value="">Select your course</option>
+                    <option value="btech">B.Tech</option>
+                    <option value="bsc">B.Sc</option>
+                    <option value="bcom">B.Com</option>
+                    <option value="ba">B.A</option>
+                    <option value="bba">BBA</option>
+                    <option value="mtech">M.Tech</option>
+                    <option value="msc">M.Sc</option>
+                    <option value="mcom">M.Com</option>
+                    <option value="ma">M.A</option>
+                    <option value="mba">MBA</option>
+                    <option value="phd">Ph.D</option>
+                    <option value="other">Other</option>
+                </select>
+                <span class="error-message" id="courseError"></span>
+            </div>
+            
+            <div class="button-container">
+                <button type="submit" class="get-started-btn" id="getStartedBtn" disabled>
+                    <span class="btn-text">Get Started</span>
+                    <span class="btn-loader"></span>
+                </button>
+            </div>
+        </form>
+        
+        <div class="progress-indicator">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <p class="progress-text">Step 2 of 2</p>
+        </div>
+    </div>
+    
+    <script src="../scripts/auth2.js"></script>
+</body>
+</html>

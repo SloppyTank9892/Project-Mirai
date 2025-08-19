@@ -32,6 +32,7 @@ button {
     border: none;
     background: transparent;
     display: flex;
+    cursor: pointer;
     transition: transform 0.3s cubic-bezier(0.77,0,0.175,1);
 }
 
@@ -60,97 +61,32 @@ button img {
     }
 }
 
-.pillar-animation {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  pointer-events: none;
-  display: flex;
-}
-
-.pillar {
-  flex: 1;
-  height: 100vh;
-  transition: transform 3.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 1.5s ease-out;
-  will-change: transform;
-  opacity: 0;
-}
-.pillar-1 {
-    background: #D8D8D8;
-}
-.pillar-2 {
-    background: #B5B5B5;
-}
-.pillar-3 {
-    background: #9B9A9A;
-}
-.pillar-4 {
-    background: #6E6E6E;
-}
-
-.pillar-1,
-.pillar-3 {
-  transform: translateY(-100vh);
-}
-.pillar-2,
-.pillar-4 {
-  transform: translateY(100vh);
-}
-
-.pillar-animation.pillar-animate-in .pillar {
-  opacity: 1;
-  transform: translateY(0) scaleY(1.2);
-}
-
-.pillar-animation.pillar-animate .pillar-1,
-.pillar-animation.pillar-animate .pillar-3 {
-  transform: translateY(-100vh);
-}
-.pillar-animation.pillar-animate .pillar-2,
-.pillar-animation.pillar-animate .pillar-4 {
-  transform: translateY(100vh);
-}
-.pillar-animation.pillar-animate .pillar {
-  opacity: 1;
-}
-
-.pillar-animation.pillar-animate {
-  z-index: 9999; 
-  pointer-events: auto;
-}
-
-.pillar-animation.pillar-animate .pillar {
-  opacity: 1;
-}
-
-.pillar-animation.pillar-animate-out .pillar-1,
-.pillar-animation.pillar-animate-out .pillar-3 {
-  transform: translateY(-100vh);
-  opacity: 0;
-}
-
-.pillar-animation.pillar-animate-out .pillar-2,
-.pillar-animation.pillar-animate-out .pillar-4 {
-  transform: translateY(100vh);
-  opacity: 0;
-}
-
-.pillar-animation.pillar-animate-out {
-  z-index: 9999; 
-  pointer-events: auto;
-}
-
-.body-exit .container {
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s, visibility 0s;
-}
-
+/* Button and body exit animations */
 .button-fade-out {
-  opacity: 0;
-  transition: opacity 1.2s ease-out;
-  pointer-events: none;
+    animation: buttonFadeOut 0.5s ease-out forwards;
 }
+
+@keyframes buttonFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1.13);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.body-exit {
+    animation: bodyFadeOut 1s ease-out forwards;
+}
+
+@keyframes bodyFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+

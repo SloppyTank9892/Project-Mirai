@@ -1,11 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Project Miriai</title>
-  </head>
-  <body>
-    <div>Hello</div>
-  </body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mirai Dashboard</title>
+    <link rel="stylesheet" href="../css/home-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <img src="../images/Lucid_Origin_Minimalistic_modern_logo_of_a_sleek_fox_represent_2.png" alt="Mirai Logo" class="nav-logo">
+                <div class="nav-text">
+                    <h1>Mirai</h1>
+                    <p>Future.Built.</p>
+                </div>
+            </div>
+            <div class="nav-links">
+                <a href="#" class="nav-link active" data-section="home">Home</a>
+                <a href="#" class="nav-link" data-section="courses">Courses</a>
+                <a href="#" class="nav-link" data-section="mentorship">Mentorship</a>
+                <a href="#" class="nav-link" data-section="ai">Mirai AI</a>
+                <a href="#" class="nav-link" data-section="profile">Profile</a>
+            </div>
+        </div>
+    </div>
+
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <div class="welcome-section">
+                    <h1 class="welcome-title">Welcome to Mirai, <span id="user-name">Student</span>!</h1>
+                    <p class="welcome-subtitle">Ready to shape your future?</p>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="book-open"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>12</h3>
+                            <p>Courses Available</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="clock"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>47</h3>
+                            <p>Hours of Learning</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>8</h3>
+                            <p>Expert Mentors</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i data-lucide="bot"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3>AI</h3>
+                            <p>Career Guidance</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Create Course CTA -->
+                <div class="create-course-cta">
+                    <div class="create-course-card">
+                        <div class="create-course-icon">
+                            <i data-lucide="plus-circle"></i>
+                        </div>
+                        <div class="create-course-content">
+                            <h3>Share Your Expertise</h3>
+                            <p>Create and publish your own course to help others learn</p>
+                            <button class="create-course-btn" onclick="openCreateCourse()">Create Course</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="features-grid">
+                    <div class="feature-card" data-feature="courses">
+                        <div class="feature-icon">
+                            <i data-lucide="graduation-cap"></i>
+                        </div>
+                        <h3>Courses</h3>
+                        <p>Learn from industry experts with hands-on projects</p>
+                        <button class="feature-btn">Explore Courses</button>
+                    </div>
+                    <div class="feature-card" data-feature="mentorship">
+                        <div class="feature-icon">
+                            <i data-lucide="user-check"></i>
+                        </div>
+                        <h3>Mentorship</h3>
+                        <p>1-on-1 sessions with experienced professionals</p>
+                        <button class="feature-btn">Find Mentors</button>
+                    </div>
+                    <div class="feature-card" data-feature="ai">
+                        <div class="feature-icon">
+                            <i data-lucide="brain"></i>
+                        </div>
+                        <h3>Mirai AI</h3>
+                        <p>AI-powered personalized career guidance</p>
+                        <button class="feature-btn">Get AI Insights</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Courses Section -->
+        <section id="courses" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Available Courses</h2>
+                    <p>Enhance your skills with our comprehensive course catalog</p>
+                </div>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-image"></div>
+                        <div class="course-content">
+                            <h3>Machine Learning Fundamentals</h3>
+                            <p>Learn the basics of ML with Python and scikit-learn</p>
+                            <div class="course-meta">
+                                <span class="duration">8 weeks</span>
+                                <span class="level">Beginner</span>
+                            </div>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <div class="course-image"></div>
+                        <div class="course-content">
+                            <h3>Web Development Bootcamp</h3>
+                            <p>Full-stack development with React and Node.js</p>
+                            <div class="course-meta">
+                                <span class="duration">12 weeks</span>
+                                <span class="level">Intermediate</span>
+                            </div>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                    <div class="course-card">
+                        <div class="course-image"></div>
+                        <div class="course-content">
+                            <h3>Data Science with Python</h3>
+                            <p>Analyze data and build predictive models</p>
+                            <div class="course-meta">
+                                <span class="duration">10 weeks</span>
+                                <span class="level">Intermediate</span>
+                            </div>
+                            <button class="enroll-btn">Enroll Now</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mentorship Section -->
+        <section id="mentorship" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Expert Mentors</h2>
+                    <p>Connect with industry professionals for personalized guidance</p>
+                </div>
+                <div class="mentors-grid">
+                    <div class="mentor-card">
+                        <div class="mentor-avatar"></div>
+                        <div class="mentor-info">
+                            <h3>Sarah Johnson</h3>
+                            <p>Senior ML Engineer at Google</p>
+                            <div class="mentor-skills">
+                                <span class="skill-tag">Machine Learning</span>
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">TensorFlow</span>
+                            </div>
+                            <button class="book-session-btn">Book Session</button>
+                        </div>
+                    </div>
+                    <div class="mentor-card">
+                        <div class="mentor-avatar"></div>
+                        <div class="mentor-info">
+                            <h3>Alex Chen</h3>
+                            <p>Full-Stack Developer at Microsoft</p>
+                            <div class="mentor-skills">
+                                <span class="skill-tag">React</span>
+                                <span class="skill-tag">Node.js</span>
+                                <span class="skill-tag">AWS</span>
+                            </div>
+                            <button class="book-session-btn">Book Session</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- AI Section -->
+        <section id="ai" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Mirai AI Assistant</h2>
+                    <p>Get personalized career recommendations powered by AI</p>
+                </div>
+                <div class="ai-interface">
+                    <div class="ai-chat">
+                        <div class="chat-header">
+                            <div class="ai-avatar">
+                                <i data-lucide="cpu"></i>
+                            </div>
+                            <div class="ai-info">
+                                <h3>Mirai AI</h3>
+                                <p>Your Career Guidance Assistant</p>
+                            </div>
+                        </div>
+                        <div class="chat-messages">
+                            <div class="message ai-message">
+                                <p>Hello! I'm here to help guide your career journey. Based on your profile, I can suggest personalized learning paths and opportunities.</p>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" placeholder="Ask me about career paths, skills, or opportunities...">
+                            <button class="send-btn">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Your Profile</h2>
+                    <p>Track your progress and manage your learning journey</p>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-info">
+                        <div class="profile-avatar"></div>
+                        <div class="profile-details">
+                            <h3 id="profile-name">Student Name</h3>
+                            <p id="profile-college">College Name</p>
+                            <p id="profile-course">Course</p>
+                            <p id="profile-date">Joined on: <span></span></p>
+                        </div>
+                    </div>
+                    <div class="progress-section">
+                        <h4>Learning Progress</h4>
+                        <div class="progress-item">
+                            <span>Courses Completed</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 60%;"></div>
+                            </div>
+                            <span>3/5</span>
+                        </div>
+                        <div class="progress-item">
+                            <span>Mentorship Sessions</span>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 40%;"></div>
+                            </div>
+                            <span>2/5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Create Course Modal -->
+    <div id="create-course-modal" class="modal hidden">
+        <div class="modal-overlay" onclick="closeCreateCourse()"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Course</h2>
+                <p>Share your expertise with the Mirai community</p>
+                <button class="modal-close" onclick="closeCreateCourse()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <div class="create-course-layout">
+                    <!-- Form -->
+                    <div class="create-course-form">
+                        <form id="create-course-form">
+                            <!-- Course Title -->
+                            <div class="form-group">
+                                <label for="course-title">Course Title</label>
+                                <input type="text" id="course-title" placeholder="Enter course title..." required>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="form-group">
+                                <label for="course-description">Course Description</label>
+                                <textarea id="course-description" placeholder="Describe what students will learn..." rows="4" required></textarea>
+                            </div>
+
+                            <!-- Tags -->
+                            <div class="form-group">
+                                <label>Tags & Skills</label>
+                                <div id="selected-tags" class="selected-tags"></div>
+                                <div class="tag-input-container">
+                                    <input type="text" id="tag-input" placeholder="Add a tag...">
+                                    <button type="button" onclick="addTag()" class="add-tag-btn">Add</button>
+                                </div>
+                                <div class="suggested-tags">
+                                    <span class="suggested-tag" onclick="addSuggestedTag('Data Science')">+ Data Science</span>
+                                    <span class="suggested-tag" onclick="addSuggestedTag('Machine Learning')">+ Machine Learning</span>
+                                    <span class="suggested-tag" onclick="addSuggestedTag('Python')">+ Python</span>
+                                    <span class="suggested-tag" onclick="addSuggestedTag('Design')">+ Design</span>
+                                    <span class="suggested-tag" onclick="addSuggestedTag('Product')">+ Product</span>
+                                    <span class="suggested-tag" onclick="addSuggestedTag('Marketing')">+ Marketing</span>
+                                </div>
+                            </div>
+
+                            <!-- Level & Duration -->
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="course-level">Level</label>
+                                    <select id="course-level">
+                                        <option value="Beginner">Beginner</option>
+                                        <option value="Intermediate">Intermediate</option>
+                                        <option value="Advanced">Advanced</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="course-duration">Estimated Duration</label>
+                                    <input type="text" id="course-duration" placeholder="e.g., 8 weeks" required>
+                                </div>
+                            </div>
+
+                            <!-- Thumbnail Upload -->
+                            <div class="form-group">
+                                <label>Course Thumbnail</label>
+                                <div class="thumbnail-upload">
+                                    <i data-lucide="upload"></i>
+                                    <p>Drag and drop an image, or click to browse</p>
+                                    <p class="upload-hint">Recommended: 16:9 aspect ratio, max 5MB</p>
+                                    <button type="button" class="choose-file-btn">Choose File</button>
+                                </div>
+                            </div>
+
+                            <!-- Submit Buttons -->
+                            <div class="form-actions">
+                                <button type="submit" class="create-btn">Create Course</button>
+                                <button type="button" onclick="closeCreateCourse()" class="cancel-btn">Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Preview -->
+                    <div class="course-preview">
+                        <h3>Preview</h3>
+                        <div class="preview-card">
+                            <div class="preview-thumbnail">
+                                <i data-lucide="upload"></i>
+                            </div>
+                            <div class="preview-content">
+                                <h4 id="preview-title">Course Title</h4>
+                                <p id="preview-description">Course description will appear here...</p>
+                                <div id="preview-tags" class="preview-tags"></div>
+                                <div class="preview-meta">
+                                    <span id="preview-level">Beginner</span>
+                                    <span id="preview-duration">Duration</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../scripts/home.js"></script>
+    <script>
+        // Initialize Lucide icons
+        document.addEventListener('DOMContentLoaded', function() {
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
+        });
+    </script>
+</body>
 </html>
