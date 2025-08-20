@@ -56,6 +56,8 @@ function customizeContentForUserType(userType) {
     switch(userType.toLowerCase()) {
         case 'fresher':
             welcomeSubtitle.textContent = 'Ready to start your career journey?';
+            // Hide create course feature for freshers
+            hideCreateCourseFeature();
             break;
         case 'senior':
             welcomeSubtitle.textContent = 'Ready to advance your career?';
@@ -65,6 +67,39 @@ function customizeContentForUserType(userType) {
             break;
         default:
             welcomeSubtitle.textContent = 'Ready to shape your future?';
+    }
+}
+
+function hideCreateCourseFeature() {
+    // Hide the create course CTA section for fresher users
+    const createCourseCTA = document.querySelector('.create-course-cta');
+    if (createCourseCTA) {
+        createCourseCTA.style.display = 'none';
+        
+        // Add a message explaining why the feature is not available
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'fresher-message';
+        messageDiv.style.cssText = `
+            background: rgba(155, 154, 154, 0.1);
+            border: 1px solid rgba(155, 154, 154, 0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin: 24px 0;
+            text-align: center;
+            color: #B5B5B5;
+        `;
+        
+        messageDiv.innerHTML = `
+            <div style="font-size: 24px; margin-bottom: 12px;">📚</div>
+            <h3 style="color: #D8D8D8; font-size: 20px; margin-bottom: 12px;">Focus on Learning First!</h3>
+            <p style="margin-bottom: 0;">As a fresher, we recommend focusing on taking courses and gaining knowledge. Course creation features will be available as you advance in your journey!</p>
+        `;
+        
+        // Insert the message after the stats grid
+        const statsGrid = document.querySelector('.stats-grid');
+        if (statsGrid && statsGrid.parentNode) {
+            statsGrid.parentNode.insertBefore(messageDiv, createCourseCTA);
+        }
     }
 }
 
