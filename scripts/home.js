@@ -804,40 +804,56 @@ function updatePreview() {
     }
 }
 
-function handleCreateCourseSubmit(e) {
-    e.preventDefault();
+async function handleCreateCourseSubmit(e) {
+  e.preventDefault();
+  
+  const formData = {
+    title: document.getElementById('course-title')?.value,
+    description: document.getElementById('course-description')?.value,
+    level: document.getElementById('course-level')?.value,
+    duration: document.getElementById('course-duration')?.value,
+    tags: selectedTags
+  };
+  
+  // Validate form data
+  if (!formData.title || !formData.description || !formData.duration) {
+    showNotification('Please fill in all required fields', 'error');
+    return;
+  }
+  
+  const createBtn = document.querySelector('.create-btn');
+  const originalText = createBtn.textContent;
+  createBtn.textContent = 'Creating...';
+  createBtn.disabled = true;
+  
+  try {
+    const response = await fetch('/api/courses', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    });
     
-    const formData = {
-        title: document.getElementById('course-title')?.value,
-        description: document.getElementById('course-description')?.value,
-        level: document.getElementById('course-level')?.value,
-        duration: document.getElementById('course-duration')?.value,
-        tags: selectedTags
-    };
+    const result = await response.json();
     
-    // Validate form data
-    if (!formData.title || !formData.description || !formData.duration) {
-        showNotification('Please fill in all required fields', 'error');
-        return;
+    if (response.ok) {
+      closeCreateCourse();
+      showNotification('Course created successfully! It will be reviewed before publishing.', 'success');
+      
+      // Optionally refresh courses list
+      // loadCourses();
+    } else {
+      showNotification(result.error || 'Failed to create course', 'error');
     }
-    
-    // Simulate course creation
-    const createBtn = document.querySelector('.create-btn');
-    const originalText = createBtn.textContent;
-    createBtn.textContent = 'Creating...';
-    createBtn.disabled = true;
-    
-    setTimeout(() => {
-        closeCreateCourse();
-        showNotification('Course created successfully! It will be reviewed before publishing.', 'success');
-        
-        // Reset button
-        createBtn.textContent = originalText;
-        createBtn.disabled = false;
-        
-        // You could send the data to your backend here
-        console.log('Course data:', formData);
-    }, 2000);
+  } catch (error) {
+    console.error('Error creating course:', error);
+    showNotification('Network error. Please try again.', 'error');
+  } finally {
+    // Reset button
+    createBtn.textContent = originalText;
+    createBtn.disabled = false;
+  }
 }
 
 function resetCreateCourseForm() {
