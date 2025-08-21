@@ -17,11 +17,13 @@ dotenv.config({ path: "./database/node_auth.env" });
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Security middleware
+// Security middleware - configured for development
 app.use(
   helmet({
     contentSecurityPolicy: false, // Disable for development
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: false, // Disable CORP restrictions for development
+    crossOriginOpenerPolicy: false,
   })
 );
 
@@ -191,14 +193,19 @@ passport.deserializeUser((id, done) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Static files middleware
+// Static files middleware with CORP headers
 app.use(
   express.static(".", {
     setHeaders: (res, path) => {
+      // Set Cross-Origin-Resource-Policy to allow cross-origin requests
+      res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
+      
       if (path.endsWith(".css")) {
         res.setHeader("Content-Type", "text/css");
       } else if (path.endsWith(".js")) {
         res.setHeader("Content-Type", "application/javascript");
+      } else if (path.endsWith(".ico")) {
+        res.setHeader("Content-Type", "image/x-icon");
       }
     },
   })
