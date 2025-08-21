@@ -6,7 +6,7 @@ document.getElementById("navigate-btn").addEventListener("click", function () {
     
     // Simple fade transition without pillar animation
     setTimeout(() => {
-      window.location.href = "../Auth Page/auth.html";
+      window.location.href = "/auth";
     }, 1000);
   }, 500); 
 });

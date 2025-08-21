@@ -1,16 +1,18 @@
 {
   "name": "project-mirai",
   "version": "1.0.0",
-  "description": "---",
-  "main": "index.js",
+  "description": "Career-focused peer-to-peer mentorship and AI guidance platform",
+  "main": "server.js",
   "scripts": {
-    "devStart": "nodemon server.js"
+    "start": "node server.js",
+    "devStart": "nodemon server.js",
+    "dev": "nodemon server.js"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SloppyTank9892/Project-Mirai.git"
   },
-  "keywords": [],
+  "keywords": ["career", "mentorship", "education", "ai-guidance"],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -18,11 +20,17 @@
   },
   "homepage": "https://github.com/SloppyTank9892/Project-Mirai#readme",
   "dependencies": {
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "connect-sqlite3": "^0.9.13",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
     "dotenv": "^17.2.1",
-    "html": "^1.0.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "sqlite3": "^5.1.7"
+    "sqlite3": "^5.1.7",
+    "express-validator": "^7.0.1",
+    "bcryptjs": "^2.4.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
