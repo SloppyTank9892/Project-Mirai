@@ -118,6 +118,20 @@ db.serialize(() => {
     )
   `);
 
+  // Course enrollments table
+  db.run(`
+    CREATE TABLE IF NOT EXISTS enrollments (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      userId INTEGER,
+      courseId INTEGER,
+      enrolledAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      status TEXT DEFAULT 'enrolled',
+      FOREIGN KEY (userId) REFERENCES users (id),
+      FOREIGN KEY (courseId) REFERENCES courses (id),
+      UNIQUE(userId, courseId)
+    )
+  `);
+
   console.log("✓ Database tables initialized");
 });
 
@@ -602,6 +616,89 @@ app.get("/api/courses/my", requireAuth, (req, res) => {
       }
 
       const coursesWithParsedTags = courses.map((course) => ({
+        ...course,
+        tags: course.tags ? JSON.parse(course.tags) : [],
+      }));
+
+      res.json({ courses: coursesWithParsedTags });
+    }
+  );
+});
+
+// Course enrollment endpoint
+app.post("/api/courses/:courseId/enroll", requireAuth, (req, res) => {
+  const courseId = parseInt(req.params.courseId);
+  const userId = req.user.id;
+
+  // Check if course exists
+  db.get(
+    "SELECT * FROM courses WHERE id = ?",
+    [courseId],
+    (err, course) => {
+      if (err) {
+        console.error("Course lookup error:", err);
+        return res.status(500).json({ error: "Database error" });
+      }
+
+      if (!course) {
+        return res.status(404).json({ error: "Course not found" });
+      }
+
+      // Check if user is already enrolled
+      db.get(
+        "SELECT * FROM enrollments WHERE userId = ? AND courseId = ?",
+        [userId, courseId],
+        (err, existingEnrollment) => {
+          if (err) {
+            console.error("Enrollment check error:", err);
+            return res.status(500).json({ error: "Database error" });
+          }
+
+          if (existingEnrollment) {
+            return res.status(400).json({ error: "Already enrolled in this course" });
+          }
+
+          // Enroll user in course
+          db.run(
+            "INSERT INTO enrollments (userId, courseId) VALUES (?, ?)",
+            [userId, courseId],
+            function (err) {
+              if (err) {
+                console.error("Enrollment error:", err);
+                return res.status(500).json({ error: "Failed to enroll in course" });
+              }
+
+              res.status(201).json({
+                message: "Successfully enrolled in course",
+                enrollmentId: this.lastID,
+              });
+            }
+          );
+        }
+      );
+    }
+  );
+});
+
+// Get user's enrolled courses
+app.get("/api/enrollments/my", requireAuth, (req, res) => {
+  db.all(
+    `
+    SELECT c.*, e.enrolledAt, e.status, u.name as creatorName
+    FROM enrollments e
+    JOIN courses c ON e.courseId = c.id
+    LEFT JOIN users u ON c.creatorId = u.id
+    WHERE e.userId = ?
+    ORDER BY e.enrolledAt DESC
+    `,
+    [req.user.id],
+    (err, enrolledCourses) => {
+      if (err) {
+        console.error("Enrolled courses fetch error:", err);
+        return res.status(500).json({ error: "Failed to fetch enrolled courses" });
+      }
+
+      const coursesWithParsedTags = enrolledCourses.map((course) => ({
         ...course,
         tags: course.tags ? JSON.parse(course.tags) : [],
       }));

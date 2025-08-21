@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Load and display user data from authentication
     loadUserData();
     
+    // Load courses data
+    loadCourses();
+    
     // Initialize navigation
     initializeNavigation();
     
@@ -47,6 +50,166 @@ function loadUserData() {
             customizeContentForUserType(userType);
         }
     }
+    
+    // Also try to load data from server if authenticated
+    loadServerUserData();
+}
+
+async function loadServerUserData() {
+    try {
+        const response = await fetch('/api/user', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            const user = data.user;
+            
+            // Update UI with server data
+            const userNameElement = document.getElementById('user-name');
+            if (userNameElement && user.name) {
+                userNameElement.textContent = user.name.split(' ')[0];
+            }
+            
+            // Update profile section with real user data
+            const profileName = document.getElementById('profile-name');
+            const profileCollege = document.getElementById('profile-college');
+            const profileCourse = document.getElementById('profile-course');
+            const profileDate = document.querySelector('#profile-date span');
+            const profileEmail = document.getElementById('profile-email');
+            
+            if (profileName && user.name) profileName.textContent = user.name;
+            if (profileCollege && user.collegeName) profileCollege.textContent = user.collegeName;
+            if (profileCourse && user.course) profileCourse.textContent = user.course;
+            if (profileEmail && user.email) profileEmail.textContent = user.email;
+            if (profileDate && user.createdAt) {
+                const joinDate = new Date(user.createdAt);
+                profileDate.textContent = joinDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+            }
+            
+            // Handle Google profile picture if available
+            if (user.googleId) {
+                // For Google users, we can try to get their profile picture
+                displayGoogleProfilePicture(user);
+            }
+            
+            // Customize content based on user type
+            if (user.userType) {
+                customizeContentForUserType(user.userType);
+            }
+        }
+    } catch (error) {
+        console.log('Could not load server user data:', error);
+    }
+}
+
+function displayGoogleProfilePicture(user) {
+    const profileAvatar = document.querySelector('.profile-avatar');
+    if (profileAvatar && user.googleId) {
+        // Create an img element for the profile picture
+        profileAvatar.innerHTML = `
+            <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=100&background=9B9A9A&color=161616" 
+                 alt="Profile Picture" 
+                 style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover;"
+                 onerror="this.src='https://ui-avatars.com/api/?name=${encodeURIComponent(user.name)}&size=100&background=9B9A9A&color=161616'">
+        `;
+    }
+}
+
+async function loadCourses() {
+    try {
+        const response = await fetch('/api/courses', {
+            method: 'GET',
+            credentials: 'include'
+        });
+        
+        if (response.ok) {
+            const data = await response.json();
+            displayCourses(data.courses);
+            
+            // Update course count in stats
+            const courseCountElement = document.querySelector('.stat-card:first-child h3');
+            if (courseCountElement) {
+                courseCountElement.textContent = data.courses.length;
+            }
+        } else {
+            console.error('Failed to load courses');
+            // Keep the static courses as fallback
+        }
+    } catch (error) {
+        console.error('Error loading courses:', error);
+        // Keep the static courses as fallback
+    }
+}
+
+function displayCourses(courses) {
+    const coursesGrid = document.querySelector('.courses-grid');
+    if (!coursesGrid) return;
+    
+    if (courses.length === 0) {
+        coursesGrid.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #B5B5B5;">
+                <i data-lucide="book-open" style="width: 48px; height: 48px; margin-bottom: 16px;"></i>
+                <h3 style="color: #D8D8D8; margin-bottom: 12px;">No Courses Available Yet</h3>
+                <p>Be the first to create a course and share your knowledge!</p>
+            </div>
+        `;
+        
+        // Re-initialize Lucide icons
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        return;
+    }
+    
+    coursesGrid.innerHTML = courses.map(course => {
+        const tagsHtml = course.tags && course.tags.length > 0 
+            ? course.tags.slice(0, 3).map(tag => `<span class="course-tag">${tag}</span>`).join('')
+            : '';
+        
+        const moreTagsHtml = course.tags && course.tags.length > 3 
+            ? `<span class="course-tag">+${course.tags.length - 3}</span>`
+            : '';
+        
+        return `
+            <div class="course-card" data-course-id="${course.id}">
+                <div class="course-image">
+                    <div class="course-image-placeholder">
+                        <i data-lucide="graduation-cap"></i>
+                    </div>
+                </div>
+                <div class="course-content">
+                    <h3>${course.title}</h3>
+                    <p>${course.description}</p>
+                    <div class="course-tags">
+                        ${tagsHtml}
+                        ${moreTagsHtml}
+                    </div>
+                    <div class="course-meta">
+                        <span class="duration">${course.duration}</span>
+                        <span class="level">${course.level}</span>
+                    </div>
+                    <div class="course-creator">
+                        <small>by ${course.creatorName || 'Anonymous'}</small>
+                    </div>
+                    <button class="enroll-btn" onclick="enrollInCourse(${course.id})">Enroll Now</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    
+    // Re-initialize Lucide icons for new course cards
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
+    
+    // Re-apply hover effects to new cards
+    addCardHoverEffects();
 }
 
 function customizeContentForUserType(userType) {
@@ -64,6 +227,9 @@ function customizeContentForUserType(userType) {
             break;
         case 'alumni':
             welcomeSubtitle.textContent = 'Ready to share your expertise?';
+            break;
+        case 'student':
+            welcomeSubtitle.textContent = 'Ready to learn and grow?';
             break;
         default:
             welcomeSubtitle.textContent = 'Ready to shape your future?';
@@ -341,7 +507,7 @@ function initializeAIChat() {
     }
 }
 
-function showEnrollmentModal() {
+async function showEnrollmentModal(courseId) {
     // Create modal overlay
     const overlay = document.createElement('div');
     overlay.className = 'modal-overlay';
@@ -437,7 +603,7 @@ function showEnrollmentModal() {
         }
     });
     
-    // Button hover effects
+    // Button hover effects and enrollment logic
     modal.querySelectorAll('.modal-btn').forEach(btn => {
         btn.addEventListener('mouseenter', function() {
             if (this.classList.contains('primary')) {
@@ -455,24 +621,72 @@ function showEnrollmentModal() {
             }
         });
         
-        btn.addEventListener('click', function() {
-            // Show success message
-            modal.innerHTML = `
-                <div style="color: #4CAF50; font-size: 48px; margin-bottom: 16px;">✓</div>
-                <h3 style="color: #D8D8D8; font-size: 24px; margin-bottom: 16px;">Success!</h3>
-                <p style="color: #B5B5B5; margin-bottom: 24px;">You're all set! Check your email for course details.</p>
-                <button class="close-modal" style="
-                    background: rgba(155, 154, 154, 0.3);
-                    color: #D8D8D8;
-                    border: none;
-                    padding: 12px 24px;
-                    border-radius: 12px;
-                    font-weight: 500;
-                    cursor: pointer;
-                ">Close</button>
-            `;
-            
-            modal.querySelector('.close-modal').addEventListener('click', () => overlay.remove());
+        btn.addEventListener('click', async function() {
+            if (this.classList.contains('primary')) {
+                // Handle enrollment
+                this.textContent = 'Enrolling...';
+                this.disabled = true;
+                
+                try {
+                    const response = await fetch(`/api/courses/${courseId}/enroll`, {
+                        method: 'POST',
+                        credentials: 'include'
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (response.ok) {
+                        // Show success message
+                        modal.innerHTML = `
+                            <div style="color: #4CAF50; font-size: 48px; margin-bottom: 16px;">✓</div>
+                            <h3 style="color: #D8D8D8; font-size: 24px; margin-bottom: 16px;">Successfully Enrolled!</h3>
+                            <p style="color: #B5B5B5; margin-bottom: 24px;">You're now enrolled in this course. Start learning and advance your skills!</p>
+                            <button class="close-modal" style="
+                                background: rgba(155, 154, 154, 0.3);
+                                color: #D8D8D8;
+                                border: none;
+                                padding: 12px 24px;
+                                border-radius: 12px;
+                                font-weight: 500;
+                                cursor: pointer;
+                            ">Close</button>
+                        `;
+                        
+                        modal.querySelector('.close-modal').addEventListener('click', () => overlay.remove());
+                        
+                        // Show success notification
+                        showNotification('Successfully enrolled in course!', 'success');
+                    } else {
+                        // Show error message
+                        modal.innerHTML = `
+                            <div style="color: #f44336; font-size: 48px; margin-bottom: 16px;">✗</div>
+                            <h3 style="color: #D8D8D8; font-size: 24px; margin-bottom: 16px;">Enrollment Failed</h3>
+                            <p style="color: #B5B5B5; margin-bottom: 24px;">${result.error || 'Something went wrong. Please try again.'}</p>
+                            <button class="close-modal" style="
+                                background: rgba(155, 154, 154, 0.3);
+                                color: #D8D8D8;
+                                border: none;
+                                padding: 12px 24px;
+                                border-radius: 12px;
+                                font-weight: 500;
+                                cursor: pointer;
+                            ">Close</button>
+                        `;
+                        
+                        modal.querySelector('.close-modal').addEventListener('click', () => overlay.remove());
+                        
+                        showNotification(result.error || 'Enrollment failed', 'error');
+                    }
+                } catch (error) {
+                    console.error('Enrollment error:', error);
+                    showNotification('Network error. Please try again.', 'error');
+                    overlay.remove();
+                }
+            } else {
+                // Save for later functionality (placeholder)
+                showNotification('Course saved to your wishlist!', 'success');
+                overlay.remove();
+            }
         });
     });
 }
@@ -868,18 +1082,27 @@ function resetCreateCourseForm() {
     updateSuggestedTags();
 }
 
+// Course enrollment function
+function enrollInCourse(courseId) {
+    // Show enrollment modal with course-specific information
+    showEnrollmentModal(courseId);
+}
+
 // Make functions globally available
 window.openCreateCourse = openCreateCourse;
 window.closeCreateCourse = closeCreateCourse;
 window.addTag = addTag;
 window.addSuggestedTag = addSuggestedTag;
 window.removeTag = removeTag;
+window.enrollInCourse = enrollInCourse;
 
 // Export functions for potential external use
 window.MiraiHome = {
     navigateToSection,
     showNotification,
     loadUserData,
+    loadCourses,
     openCreateCourse,
-    closeCreateCourse
+    closeCreateCourse,
+    enrollInCourse
 };

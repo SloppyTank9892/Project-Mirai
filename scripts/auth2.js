@@ -170,11 +170,15 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Store user data in localStorage
+        // Get user type from localStorage (set in auth1.js)
+        const userType = localStorage.getItem('miraiUserType') || 'student';
+        
+        // Store user data in localStorage for immediate use
         const userData = {
             studentName: studentName,
             collegeName: collegeName,
             course: course,
+            userType: userType.toLowerCase(),
             registrationDate: new Date().toISOString()
         };
         
@@ -183,11 +187,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // Show loading state
         showLoadingState();
         
-        // Simulate processing time and redirect
-        setTimeout(() => {
-            // Redirect to home page
-            window.location.href = '../Home/home.html';
-        }, 2000);
+        // Save profile data to backend
+        saveProfileToBackend(userData);
     });
     
     // Show loading state
@@ -402,5 +403,176 @@ function addEnhancedStyles() {
     document.head.appendChild(style);
 }
 
+// Save profile data to backend
+async function saveProfileToBackend(userData) {
+    try {
+        // Check if user is authenticated (from Google or local signup)
+        const response = await fetch('/api/user/profile', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include',
+            body: JSON.stringify({
+                name: userData.studentName,
+                collegeName: userData.collegeName,
+                course: userData.course,
+                userType: userData.userType
+            })
+        });
+        
+        if (response.ok) {
+            // Profile saved successfully, redirect to home
+            showSuccessState();
+            setTimeout(() => {
+                window.location.href = '../Home/home.html';
+            }, 1500);
+        } else if (response.status === 401) {
+            // User not authenticated, treat as new user and create account
+            await createNewUserAccount(userData);
+        } else {
+            // Handle other errors
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Failed to save profile');
+        }
+    } catch (error) {
+        console.error('Profile save error:', error);
+        showErrorState(error.message);
+    }
+}
+
+// Create new user account for non-authenticated users
+async function createNewUserAccount(userData) {
+    try {
+        // Generate a temporary email and password for the user
+        const tempEmail = `temp_${Date.now()}@mirai.local`;
+        const tempPassword = generateTempPassword();
+        
+        const signupResponse = await fetch('/auth/signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                name: userData.studentName,
+                email: tempEmail,
+                password: tempPassword,
+                userType: userData.userType,
+                collegeName: userData.collegeName,
+                course: userData.course
+            })
+        });
+        
+        if (signupResponse.ok) {
+            // Account created successfully
+            showSuccessState();
+            setTimeout(() => {
+                window.location.href = '../Home/home.html';
+            }, 1500);
+        } else {
+            const errorData = await signupResponse.json();
+            throw new Error(errorData.error || 'Failed to create account');
+        }
+    } catch (error) {
+        console.error('Account creation error:', error);
+        showErrorState(error.message);
+    }
+}
+
+// Generate temporary password for users who don't provide one
+function generateTempPassword() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let password = '';
+    for (let i = 0; i < 12; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+}
+
+// Show success state
+function showSuccessState() {
+    const getStartedBtn = document.getElementById('getStartedBtn');
+    const btnText = getStartedBtn.querySelector('.btn-text');
+    const btnLoader = getStartedBtn.querySelector('.btn-loader');
+    
+    getStartedBtn.classList.remove('loading');
+    getStartedBtn.classList.add('success');
+    btnText.textContent = 'Profile Saved!';
+    btnLoader.style.display = 'none';
+    
+    // Add success checkmark
+    const checkmark = document.createElement('span');
+    checkmark.innerHTML = '✓';
+    checkmark.style.marginLeft = '8px';
+    checkmark.style.color = '#4CAF50';
+    btnText.appendChild(checkmark);
+}
+
+// Show error state
+function showErrorState(message) {
+    const getStartedBtn = document.getElementById('getStartedBtn');
+    const btnText = getStartedBtn.querySelector('.btn-text');
+    const btnLoader = getStartedBtn.querySelector('.btn-loader');
+    
+    getStartedBtn.classList.remove('loading');
+    getStartedBtn.classList.add('error');
+    btnText.textContent = 'Error: ' + message;
+    btnLoader.style.display = 'none';
+    
+    // Re-enable form after 3 seconds
+    setTimeout(() => {
+        getStartedBtn.classList.remove('error');
+        btnText.textContent = 'Get Started';
+        getStartedBtn.disabled = false;
+        
+        // Re-enable inputs
+        document.getElementById('studentName').disabled = false;
+        document.getElementById('collegeName').disabled = false;
+        document.getElementById('course').disabled = false;
+        
+        // Remove loading animation from container
+        document.querySelector('.container').style.pointerEvents = 'auto';
+    }, 3000);
+}
+
+// Add enhanced button states CSS
+function addButtonStatesCSS() {
+    const style = document.createElement('style');
+    style.textContent = `
+        .get-started-btn.success {
+            background: linear-gradient(135deg, #4CAF50, #45a049);
+            border-color: #4CAF50;
+        }
+        
+        .get-started-btn.error {
+            background: linear-gradient(135deg, #f44336, #da190b);
+            border-color: #f44336;
+        }
+        
+        .get-started-btn .btn-loader {
+            display: none;
+        }
+        
+        .get-started-btn.loading .btn-loader {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid transparent;
+            border-top: 2px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 8px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    `;
+    
+    document.head.appendChild(style);
+}
+
 // Initialize enhanced styles
 addEnhancedStyles();
+addButtonStatesCSS();
