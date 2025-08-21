@@ -12,7 +12,12 @@
     "type": "git",
     "url": "git+https://github.com/SloppyTank9892/Project-Mirai.git"
   },
-  "keywords": ["career", "mentorship", "education", "ai-guidance"],
+  "keywords": [
+    "career",
+    "mentorship",
+    "education",
+    "ai-guidance"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
@@ -20,17 +25,17 @@
   },
   "homepage": "https://github.com/SloppyTank9892/Project-Mirai#readme",
   "dependencies": {
-    "express": "^4.18.2",
-    "express-session": "^1.17.3",
+    "bcryptjs": "^2.4.3",
     "connect-sqlite3": "^0.9.13",
     "cors": "^2.8.5",
-    "helmet": "^7.0.0",
     "dotenv": "^17.2.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "express-validator": "^7.0.1",
+    "helmet": "^7.0.0",
     "passport": "^0.7.0",
     "passport-google-oauth20": "^2.0.0",
-    "sqlite3": "^5.1.7",
-    "express-validator": "^7.0.1",
-    "bcryptjs": "^2.4.3"
+    "sqlite3": "^5.1.7"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
