@@ -141,7 +141,9 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || "http://localhost:3000/auth/google/callback",
+      callbackURL:
+        process.env.GOOGLE_CALLBACK_URL ||
+        "http://localhost:3000/auth/google/callback",
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
@@ -213,7 +215,7 @@ app.use(
     setHeaders: (res, path) => {
       // Set Cross-Origin-Resource-Policy to allow cross-origin requests
       res.setHeader("Cross-Origin-Resource-Policy", "cross-origin");
-      
+
       if (path.endsWith(".css")) {
         res.setHeader("Content-Type", "text/css");
       } else if (path.endsWith(".js")) {
@@ -257,8 +259,12 @@ app.get("/auth2", (req, res) => {
 app.get("/dashboard", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "Home", "home.html"));
 });
-
 app.get("/home", requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, "Home", "home.html"));
+});
+
+// Catch-all route for hash-based navigation
+app.get("/home*", requireAuth, (req, res) => {
   res.sendFile(path.join(__dirname, "Home", "home.html"));
 });
 
@@ -631,53 +637,53 @@ app.post("/api/courses/:courseId/enroll", requireAuth, (req, res) => {
   const userId = req.user.id;
 
   // Check if course exists
-  db.get(
-    "SELECT * FROM courses WHERE id = ?",
-    [courseId],
-    (err, course) => {
-      if (err) {
-        console.error("Course lookup error:", err);
-        return res.status(500).json({ error: "Database error" });
-      }
-
-      if (!course) {
-        return res.status(404).json({ error: "Course not found" });
-      }
-
-      // Check if user is already enrolled
-      db.get(
-        "SELECT * FROM enrollments WHERE userId = ? AND courseId = ?",
-        [userId, courseId],
-        (err, existingEnrollment) => {
-          if (err) {
-            console.error("Enrollment check error:", err);
-            return res.status(500).json({ error: "Database error" });
-          }
-
-          if (existingEnrollment) {
-            return res.status(400).json({ error: "Already enrolled in this course" });
-          }
-
-          // Enroll user in course
-          db.run(
-            "INSERT INTO enrollments (userId, courseId) VALUES (?, ?)",
-            [userId, courseId],
-            function (err) {
-              if (err) {
-                console.error("Enrollment error:", err);
-                return res.status(500).json({ error: "Failed to enroll in course" });
-              }
-
-              res.status(201).json({
-                message: "Successfully enrolled in course",
-                enrollmentId: this.lastID,
-              });
-            }
-          );
-        }
-      );
+  db.get("SELECT * FROM courses WHERE id = ?", [courseId], (err, course) => {
+    if (err) {
+      console.error("Course lookup error:", err);
+      return res.status(500).json({ error: "Database error" });
     }
-  );
+
+    if (!course) {
+      return res.status(404).json({ error: "Course not found" });
+    }
+
+    // Check if user is already enrolled
+    db.get(
+      "SELECT * FROM enrollments WHERE userId = ? AND courseId = ?",
+      [userId, courseId],
+      (err, existingEnrollment) => {
+        if (err) {
+          console.error("Enrollment check error:", err);
+          return res.status(500).json({ error: "Database error" });
+        }
+
+        if (existingEnrollment) {
+          return res
+            .status(400)
+            .json({ error: "Already enrolled in this course" });
+        }
+
+        // Enroll user in course
+        db.run(
+          "INSERT INTO enrollments (userId, courseId) VALUES (?, ?)",
+          [userId, courseId],
+          function (err) {
+            if (err) {
+              console.error("Enrollment error:", err);
+              return res
+                .status(500)
+                .json({ error: "Failed to enroll in course" });
+            }
+
+            res.status(201).json({
+              message: "Successfully enrolled in course",
+              enrollmentId: this.lastID,
+            });
+          }
+        );
+      }
+    );
+  });
 });
 
 // Get user's enrolled courses
@@ -695,7 +701,9 @@ app.get("/api/enrollments/my", requireAuth, (req, res) => {
     (err, enrolledCourses) => {
       if (err) {
         console.error("Enrolled courses fetch error:", err);
-        return res.status(500).json({ error: "Failed to fetch enrolled courses" });
+        return res
+          .status(500)
+          .json({ error: "Failed to fetch enrolled courses" });
       }
 
       const coursesWithParsedTags = enrolledCourses.map((course) => ({
