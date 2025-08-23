@@ -1,0 +1,92 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body {
+    background: rgb(22, 22, 22);
+}
+
+.container {
+    width: 90vw;
+    max-width: 500px;
+    height: 90vw;
+    max-height: 500px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+button {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: none;
+    background: transparent;
+    display: flex;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.77,0,0.175,1);
+}
+
+button:hover {
+    transform: scale(1.13);
+}
+
+button img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+.logo-img {
+    opacity: 0;
+    animation: fadeIn 1.5s ease-in forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+/* Button and body exit animations */
+.button-fade-out {
+    animation: buttonFadeOut 0.5s ease-out forwards;
+}
+
+@keyframes buttonFadeOut {
+    from {
+        opacity: 1;
+        transform: scale(1.13);
+    }
+    to {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+}
+
+.body-exit {
+    animation: bodyFadeOut 1s ease-out forwards;
+}
+
+@keyframes bodyFadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
