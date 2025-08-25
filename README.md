@@ -46,49 +46,6 @@ University students often struggle to make informed career and skill-development
 
 ---
 
-### **5. Tech Stack (for MVP)**
-
-* **Frontend & Backend**: Bubble (No-code)
-* **AI Integration**: OpenAI GPT API for chatbot & recommendations
-* **Database**: Bubble’s built-in DB
-* **Scheduling**: Bubble plugin for calendar booking
-* **Authentication**: Email or university ID login
-
----
-
-### **6. Development Timeline** (Deadline: 24 Aug 2025)
-
-**Week 1 (Aug 8–14):**
-
-* Finalize UI/UX wireframe in Bubble
-* Build user login & profile creation (passion tags, skills)
-* Integrate mentor directory page
-
-**Week 2 (Aug 15–20):**
-
-* Add AI chatbot with OpenAI API
-* Create booking system for 1:1 mentor calls
-* Add placement statistics page
-
-**Week 3 (Aug 21–23):**
-
-* Add karma points system
-* Test end-to-end workflows
-* Prepare pitch deck & demo video
-
-**Aug 24:** Final submission
-
----
-
-### **7. Team Roles** (4 Members)
-
-* **Project Lead / Bubble Dev** – Oversees entire build, designs pages, integrates core features.
-* **AI & API Integrator** – Sets up OpenAI chatbot, testing prompts, connects mentor matching logic.
-* **Data & Content Manager** – Collects placement data, mentor info, creates course/resource content.
-* **UI/UX Designer & Tester** – Designs visual theme, ensures smooth navigation, conducts user testing.
-
----
-
 ### **8. Long-Term Vision**
 
 After the hackathon, Mirai can evolve into a multi-university platform with:
@@ -100,6 +57,3 @@ After the hackathon, Mirai can evolve into a multi-university platform with:
 
 ---
 
----
-
-Next, I can prepare a **pitch slide outline** for you so you can plug this directly into a PPT and impress your team & judges. That way, you’ll have both the **document proposal** and a **presentation version** ready.
